@@ -1,7 +1,11 @@
-import yagmail
 import os
 
-def send_email_notification(conversion_rate):
+import yagmail
+
+
+def send_email_notification(
+    conversion_rate,
+):
     SENDER_EMAIL = os.getenv("SENDER_EMAIL")
     if not SENDER_EMAIL:
         raise ValueError("Sender email is not set in the environment variables.")
@@ -17,15 +21,23 @@ def send_email_notification(conversion_rate):
     subject = f"Exchange Rate Notification: {conversion_rate}"
     body = f"The current exchange rate is {conversion_rate}."
 
-    yag = yagmail.SMTP(user=SENDER_EMAIL, password=SENDER_PASSWORD)
-    yag.send(to=RECIPIENT_EMAILS, subject=subject, contents=body)
+    yag = yagmail.SMTP(
+        user=SENDER_EMAIL,
+        password=SENDER_PASSWORD,
+    )
+    yag.send(
+        to=RECIPIENT_EMAILS,
+        subject=subject,
+        contents=body,
+    )
 
     return True
+
 
 if __name__ == "__main__":
     # Example usage
     conversion_rate = "50.00"  # This would be dynamically fetched in a real scenario
     res = send_email_notification(conversion_rate)
-    
+
     if res:
         print("Email notification sent successfully.")
