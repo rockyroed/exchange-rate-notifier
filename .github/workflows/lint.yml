@@ -1,0 +1,37 @@
+name: Lint
+
+on:
+    push:
+        branches:
+        - main
+    pull_request:
+        branches:
+        - main
+
+jobs:
+    lint:
+        runs-on: ubuntu-latest
+        steps:
+            # Step 1: Checkout the repository
+            - name: Checkout code
+              uses: actions/checkout@v3
+
+            # Step 2: Set up Python 3.13
+            - name: Set up Python 3.13
+              uses: actions/setup-python@v4
+              with:
+                python-version: 3.13
+
+            # Step 3: Install dependencies
+            - name: Install dependencies
+              run: |
+                    python -m pip install --upgrade pip
+                    pip install -r requirements.txt
+
+            # Step 4: Run linters
+            - name: Run linters
+              run: |
+                    flake8 .
+                    black --check .
+                    isort --check-only .
+                    codespell .
