@@ -2,3 +2,7 @@ requests==2.32.4
 dotenv==0.9.9
 yagmail==0.15.293
 keyring==25.6.0
+flake8==7.3.0
+black==25.1.0
+isort==6.0.1
+codespell==2.4.1
