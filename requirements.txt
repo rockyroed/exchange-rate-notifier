@@ -1,0 +1,4 @@
+requests==2.32.4
+dotenv==0.9.9
+yagmail==0.15.293
+keyring==25.6.0
