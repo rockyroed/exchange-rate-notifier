@@ -3,6 +3,7 @@ name: Scheduled Exchange Rate Notifier
 on:
     schedule:
         - cron: "0 * * * *" # Runs every hour
+    workflow_dispatch:
 
 jobs:
     run-notifier:
