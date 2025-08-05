@@ -3,9 +3,7 @@ import os
 import yagmail
 
 
-def send_email_notification(
-    conversion_rate,
-):
+def send_email_notification(conversion_rate, status, threshold):
     SENDER_EMAIL = os.getenv("SENDER_EMAIL")
     if not SENDER_EMAIL:
         raise ValueError("Sender email is not set in the environment variables.")
@@ -19,7 +17,7 @@ def send_email_notification(
         raise ValueError("Recipient emails are not set in the environment variables.")
 
     subject = f"Exchange Rate Notification: {conversion_rate}"
-    body = f"The current exchange rate is {conversion_rate}."
+    body = f"The current exchange rate is ₱{conversion_rate}. It is {status} the threshold (₱{threshold})."
 
     yag = yagmail.SMTP(
         user=SENDER_EMAIL,

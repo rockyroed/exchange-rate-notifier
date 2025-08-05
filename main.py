@@ -8,29 +8,40 @@ from actions.exchange_rate.get_exchange_rate import get_exchange_rate
 def main():
     load_dotenv()
     CURRENCY = "PHP"
-    THRESHOLD = 57.8
+    UPPER_THRESHOLD = 57.8
+    LOWER_THRESHOLD = 55.5
 
     rates = get_exchange_rate(CURRENCY)
-    is_above_threshold = check_exchange_rate(
+    status = check_exchange_rate(
         rates,
-        CURRENCY,
-        THRESHOLD,
+        currency=CURRENCY,
+        upper_threshold=UPPER_THRESHOLD,
+        lower_threshold=LOWER_THRESHOLD,
     )
 
-    if is_above_threshold:
-        print(
-            f"The current exchange rate is ₱{rates[CURRENCY]}. It is above the threshold ₱{THRESHOLD}."
-        )
-        print("Sending notification...")
-        res = send_email_notification(rates[CURRENCY])
+    message = f"The current exchange rate is ₱{rates[CURRENCY]}."
 
-        if res:
-            print("Email notification sent successfully.")
-    else:
-        print(
-            f"The current exchange rate is ₱{rates[CURRENCY]}. It is below the threshold ₱{THRESHOLD}."
+    if not status:
+        message += f" It is within the thresholds ₱{LOWER_THRESHOLD} and ₱{UPPER_THRESHOLD}. No notification will be sent."
+        print(message)
+        return
+
+    if status == "above":
+        message += (
+            f" It is above the threshold (₱{UPPER_THRESHOLD}). Sending notification..."
         )
-        print("No notification sent.")
+        threshold = UPPER_THRESHOLD
+    elif status == "below":
+        message += (
+            f" It is below the threshold (₱{LOWER_THRESHOLD}). Sending notification..."
+        )
+        threshold = LOWER_THRESHOLD
+
+    print(message)
+    if send_email_notification(
+        conversion_rate=rates[CURRENCY], status=status, threshold=threshold
+    ):
+        print("Email notification sent successfully.")
 
 
 if __name__ == "__main__":
