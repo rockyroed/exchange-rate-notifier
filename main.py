@@ -1,14 +1,10 @@
 from actions.email_notify.notify import send_email_notification
 from actions.exchange_rate.check_exchange_rate import check_exchange_rate
 from actions.exchange_rate.get_exchange_rate import get_exchange_rate
+from constants import CURRENCY, LOWER_THRESHOLD, UPPER_THRESHOLD
 
 
 def main():
-    load_dotenv()
-    CURRENCY = "PHP"
-    UPPER_THRESHOLD = 57.8
-    LOWER_THRESHOLD = 55.5
-
     rates = get_exchange_rate(CURRENCY)
     status = check_exchange_rate(
         rates,
