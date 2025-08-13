@@ -1,7 +1,7 @@
 import os
+import tempfile
 
 import yagmail
-import tempfile
 
 
 def hourly(conversion_rate, status, threshold):
@@ -60,9 +60,10 @@ def daily(rates, fig):
         image_path = tmpfile.name
 
     import yagmail
+
     body = [
         f"<p>Here is the daily exchange rate graph.<br>Average rate: ₱{avg_rate:.2f}</p>",
-        yagmail.inline(image_path)
+        yagmail.inline(image_path),
     ]
 
     yag = yagmail.SMTP(
