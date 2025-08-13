@@ -30,8 +30,4 @@ jobs:
 
             # Step 4: Run linters
             - name: Run linters
-              run: |
-                    flake8 .
-                    black --check .
-                    isort --check-only .
-                    codespell .
+              run: make lint-and-format
