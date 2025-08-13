@@ -2,9 +2,8 @@ from database.rates import post_rate
 
 
 def post(
-    rates,
-    currency="PHP",
+    rate
 ):
-    res = post_rate(rates[currency])
+    res = post_rate(rate)
 
     return res
