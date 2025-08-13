@@ -1,6 +1,7 @@
 import os
 
 import requests
+
 from actions.exchange_rate.post import post
 
 
