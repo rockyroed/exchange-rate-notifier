@@ -1,0 +1,36 @@
+from actions.email.send import hourly
+from actions.exchange_rate.check import check
+from actions.exchange_rate.get import get
+from constants import CURRENCY, LOWER_THRESHOLD, UPPER_THRESHOLD
+
+
+def main():
+    rate = get(CURRENCY)
+    status = check(
+        rate,
+        upper_threshold=UPPER_THRESHOLD,
+        lower_threshold=LOWER_THRESHOLD,
+    )
+
+    message = f"The current exchange rate is ₱{rate}."
+
+    if not status:
+        message += f" It is within the thresholds ₱{LOWER_THRESHOLD} and ₱{UPPER_THRESHOLD}."
+        " No notification will be sent."
+        print(message)
+        return
+
+    if status == "above":
+        message += f" It is above the threshold (₱{UPPER_THRESHOLD}). Sending notification..."
+        threshold = UPPER_THRESHOLD
+    elif status == "below":
+        message += f" It is below the threshold (₱{LOWER_THRESHOLD}). Sending notification..."
+        threshold = LOWER_THRESHOLD
+
+    print(message)
+    if hourly(conversion_rate=rate, status=status, threshold=threshold):
+        print("Email notification sent successfully.")
+
+
+if __name__ == "__main__":
+    main()
