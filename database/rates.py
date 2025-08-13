@@ -1,6 +1,6 @@
 import os
 
-from connect import connect
+from database.connect import connect
 
 POSTGRES_USER = os.getenv("POSTGRES_USER")
 POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD")

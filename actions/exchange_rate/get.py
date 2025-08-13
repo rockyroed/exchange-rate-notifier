@@ -1,7 +1,7 @@
 import os
 
 import requests
-from post import post
+from actions.exchange_rate.post import post
 
 
 def get(
