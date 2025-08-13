@@ -1,4 +1,5 @@
 import os
+
 from connect import connect
 
 POSTGRES_USER = os.getenv("POSTGRES_USER")
@@ -19,7 +20,7 @@ def get_rates():
             password=POSTGRES_PASSWORD,
             host=POSTGRES_HOST,
             port=POSTGRES_PORT,
-            dbname=POSTGRES_DBNAME
+            dbname=POSTGRES_DBNAME,
         )
 
         if connection is None:
@@ -54,7 +55,7 @@ def get_rate(id):
             password=POSTGRES_PASSWORD,
             host=POSTGRES_HOST,
             port=POSTGRES_PORT,
-            dbname=POSTGRES_DBNAME
+            dbname=POSTGRES_DBNAME,
         )
 
         if connection is None:
@@ -92,7 +93,7 @@ def post_rate(rate):
             password=POSTGRES_PASSWORD,
             host=POSTGRES_HOST,
             port=POSTGRES_PORT,
-            dbname=POSTGRES_DBNAME
+            dbname=POSTGRES_DBNAME,
         )
 
         if connection is None:
