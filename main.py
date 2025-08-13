@@ -1,12 +1,12 @@
-from actions.email_notify.notify import send_email_notification
-from actions.exchange_rate.check_exchange_rate import check_exchange_rate
-from actions.exchange_rate.get_exchange_rate import get_exchange_rate
+from actions.email.send import send_email
+from actions.exchange_rate.check import check
+from actions.exchange_rate.get import get
 from constants import CURRENCY, LOWER_THRESHOLD, UPPER_THRESHOLD
 
 
 def main():
-    rates = get_exchange_rate(CURRENCY)
-    status = check_exchange_rate(
+    rates = get(CURRENCY)
+    status = check(
         rates,
         currency=CURRENCY,
         upper_threshold=UPPER_THRESHOLD,
@@ -29,7 +29,7 @@ def main():
         threshold = LOWER_THRESHOLD
 
     print(message)
-    if send_email_notification(conversion_rate=rates[CURRENCY], status=status, threshold=threshold):
+    if send_email(conversion_rate=rates[CURRENCY], status=status, threshold=threshold):
         print("Email notification sent successfully.")
 
 

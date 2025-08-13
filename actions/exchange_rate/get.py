@@ -3,7 +3,7 @@ import os
 import requests
 
 
-def get_exchange_rate(
+def get(
     currency="PHP",
 ):
     APP_ID = os.getenv("OPEN_EXCHANGE_RATES_APP_ID")

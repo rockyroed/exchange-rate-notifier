@@ -3,7 +3,7 @@ import os
 import yagmail
 
 
-def send_email_notification(conversion_rate, status, threshold):
+def send_email(conversion_rate, status, threshold):
     SENDER_EMAIL = os.getenv("SENDER_EMAIL")
     if not SENDER_EMAIL:
         raise ValueError("Sender email is not set in the environment variables.")
@@ -35,7 +35,7 @@ def send_email_notification(conversion_rate, status, threshold):
 if __name__ == "__main__":
     # Example usage
     conversion_rate = "50.00"  # This would be dynamically fetched in a real scenario
-    res = send_email_notification(conversion_rate)
+    res = send_email(conversion_rate)
 
     if res:
         print("Email notification sent successfully.")

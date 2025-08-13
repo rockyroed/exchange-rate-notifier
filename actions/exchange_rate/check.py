@@ -1,4 +1,4 @@
-def check_exchange_rate(
+def check(
     rates,
     currency,
     upper_threshold=57.8,
