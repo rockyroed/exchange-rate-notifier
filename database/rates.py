@@ -1,4 +1,5 @@
 import os
+import datetime
 
 from database.connect import connect
 
@@ -9,7 +10,7 @@ POSTGRES_PORT = os.getenv("POSTGRES_PORT")
 POSTGRES_DBNAME = os.getenv("POSTGRES_DBNAME")
 
 
-def get_rates():
+def get_rates(rows=24):
     # Connect to the database
     connection = None
     cursor = None
@@ -27,13 +28,28 @@ def get_rates():
             return
 
         cursor = connection.cursor()
-        cursor.execute("SELECT * FROM rates;")
-        rows = cursor.fetchall()
+        cursor.execute("SELECT * FROM rates ORDER BY created_at ASC LIMIT %s;", (rows,))
+        result_rows = cursor.fetchall()
 
-        if rows is None:
+        if result_rows is None:
             return None
 
-        return rows
+        # Get column names
+        colnames = [desc[0] for desc in cursor.description]
+        result = []
+        for row in result_rows:
+            row_dict = dict(zip(colnames, row))
+            if "created_at" in row_dict and row_dict["created_at"] is not None:
+                # Convert to PHT (UTC+8)
+                if row_dict["created_at"].tzinfo is None:
+                    # Assume naive datetime is UTC
+                    dt_utc = row_dict["created_at"].replace(tzinfo=datetime.timezone.utc)
+                else:
+                    dt_utc = row_dict["created_at"].astimezone(datetime.timezone.utc)
+                dt_pht = dt_utc.astimezone(datetime.timezone(datetime.timedelta(hours=8)))
+                row_dict["created_at"] = dt_pht.strftime("%m/%d, %I:%M %p")
+            result.append(row_dict)
+        return result
     except Exception as e:
         print(f"Failed to get rates: {e}")
     finally:
