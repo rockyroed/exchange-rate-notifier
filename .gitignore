@@ -208,3 +208,6 @@ __marimo__/
 
 # .DS_STORE for MacOS
 **/.DS_Store
+
+# Local test files
+test*.py
