@@ -1,5 +1,3 @@
-from dotenv import load_dotenv
-
 from actions.email_notify.notify import send_email_notification
 from actions.exchange_rate.check_exchange_rate import check_exchange_rate
 from actions.exchange_rate.get_exchange_rate import get_exchange_rate
