@@ -5,15 +5,14 @@ from constants import CURRENCY, LOWER_THRESHOLD, UPPER_THRESHOLD
 
 
 def main():
-    rates = get(CURRENCY)
+    rate = get(CURRENCY)
     status = check(
-        rates,
-        currency=CURRENCY,
+        rate,
         upper_threshold=UPPER_THRESHOLD,
         lower_threshold=LOWER_THRESHOLD,
     )
 
-    message = f"The current exchange rate is ₱{rates[CURRENCY]}."
+    message = f"The current exchange rate is ₱{rate}."
 
     if not status:
         message += f" It is within the thresholds ₱{LOWER_THRESHOLD} and ₱{UPPER_THRESHOLD}."
@@ -29,7 +28,7 @@ def main():
         threshold = LOWER_THRESHOLD
 
     print(message)
-    if send_email(conversion_rate=rates[CURRENCY], status=status, threshold=threshold):
+    if send_email(conversion_rate=rate, status=status, threshold=threshold):
         print("Email notification sent successfully.")
 
 

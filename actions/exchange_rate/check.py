@@ -1,11 +1,10 @@
 def check(
-    rates,
-    currency,
+    rate,
     upper_threshold=57.8,
     lower_threshold=55.5,
 ):
-    if rates.get(currency, 0) > upper_threshold:
+    if rate > upper_threshold:
         return "above"
-    if rates.get(currency, 0) < lower_threshold:
+    if rate < lower_threshold:
         return "below"
     return False

@@ -15,16 +15,15 @@ def get(
         data = response.json()
         rates = data.get("rates", {})
 
-        if rates:
-            res = post(rates[currency])
-
-            if not res:
-                raise Exception("Failed to post exchange rate to the database.")
-
         if not rates:
             raise Exception("No rates found in the response.")
 
-        return rates
+        rate = round(rates.get(currency), 2)
+
+        # Post rate to database
+        post(rate)
+
+        return rate
     elif APP_BACKUP_ID:
         response = requests.get(
             f"https://openexchangerates.org/api/latest.json?app_id={APP_BACKUP_ID}&symbols={currency}"
