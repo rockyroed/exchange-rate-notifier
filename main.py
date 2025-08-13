@@ -1,4 +1,4 @@
-from actions.email.send import send_email
+from actions.email.send import hourly
 from actions.exchange_rate.check import check
 from actions.exchange_rate.get import get
 from constants import CURRENCY, LOWER_THRESHOLD, UPPER_THRESHOLD
@@ -28,7 +28,7 @@ def main():
         threshold = LOWER_THRESHOLD
 
     print(message)
-    if send_email(conversion_rate=rate, status=status, threshold=threshold):
+    if hourly(conversion_rate=rate, status=status, threshold=threshold):
         print("Email notification sent successfully.")
 
 

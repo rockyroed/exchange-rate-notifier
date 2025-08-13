@@ -3,7 +3,7 @@ import os
 import yagmail
 
 
-def send_email(conversion_rate, status, threshold):
+def hourly(conversion_rate, status, threshold):
     SENDER_EMAIL = os.getenv("SENDER_EMAIL")
     if not SENDER_EMAIL:
         raise ValueError("Sender email is not set in the environment variables.")
