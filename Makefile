@@ -1,12 +1,18 @@
-.PHONY: lint-and-format
+.PHONY: lint format check-format spell-check
 
-lint-and-format:
+lint:
 	flake8 .
-	black --check .
-	isort --check-only .
-	codespell .
 
-lint-and-format-fix:
+format:
 	black .
 	isort .
+
+format-check:
+	black --check .
+	isort --check-only .
+
+spell-fix:
 	codespell --write-changes .
+
+spell-check:
+	codespell .

@@ -30,4 +30,7 @@ jobs:
 
             # Step 4: Run linters
             - name: Run linters
-              run: make lint-and-format
+              run: |
+                  make lint
+                  make format-check
+                  make spell-check
