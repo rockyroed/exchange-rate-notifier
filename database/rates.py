@@ -30,15 +30,20 @@ def get_rates(rows=24):
         cursor = connection.cursor()
 
         if rows:
-            cursor.execute("""
+            cursor.execute(
+                """
             SELECT * FROM (
                 SELECT * FROM rates ORDER BY created_at DESC LIMIT %s
             ) AS recent_rates ORDER BY created_at ASC;
-            """, (rows,))
+            """,
+                (rows,),
+            )
         else:
-            cursor.execute("""
+            cursor.execute(
+                """
             SELECT * FROM rates ORDER BY created_at ASC;
-            """)
+            """
+            )
         result_rows = cursor.fetchall()
 
         if result_rows is None:
