@@ -62,7 +62,9 @@ def daily(rates, fig):
     import yagmail
 
     body = [
-        f"<p>Here is the daily exchange rate graph.<br>Average rate: ₱{avg_rate:.2f}</p>",
+        f"<p>Here is the daily exchange rate graph."
+        f"<br>Latest rate: ₱{rates[-1]['rate']:.2f}"
+        f"<br>Average rate: ₱{avg_rate:.2f}</p>",
         yagmail.inline(image_path),
     ]
 
