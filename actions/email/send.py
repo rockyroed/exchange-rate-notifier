@@ -17,7 +17,7 @@ def hourly(conversion_rate, status, threshold):
     if not RECIPIENT_EMAILS:
         raise ValueError("Recipient emails are not set in the environment variables.")
 
-    subject = f"Exchange Rate Notification: {conversion_rate}"
+    subject = "Exchange Rate Notification"
     body = f"The current exchange rate is ₱{conversion_rate}. It is {status} the threshold (₱{threshold})."
 
     yag = yagmail.SMTP(
