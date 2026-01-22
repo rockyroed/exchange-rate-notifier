@@ -4,7 +4,7 @@ import tempfile
 import yagmail
 
 
-def hourly(conversion_rate, status, threshold):
+def hourly(conversion_rate, direction, mean, std_dev, deviation, percentage_change):
     SENDER_EMAIL = os.getenv("SENDER_EMAIL")
     if not SENDER_EMAIL:
         raise ValueError("Sender email is not set in the environment variables.")
@@ -17,8 +17,19 @@ def hourly(conversion_rate, status, threshold):
     if not RECIPIENT_EMAILS:
         raise ValueError("Recipient emails are not set in the environment variables.")
 
-    subject = "Exchange Rate Notification"
-    body = f"The current exchange rate is ₱{conversion_rate}. It is {status} the threshold (₱{threshold})."
+    subject = f"Exchange Rate Alert: Significant {direction.capitalize()} Detected"
+
+    direction_emoji = "📈" if direction == "spike" else "📉"
+    change_sign = "+" if percentage_change > 0 else ""
+
+    body = (
+        f"{direction_emoji} <b>Significant {direction.capitalize()} Detected!</b><br><br>"
+        f"Current Rate: <b>₱{conversion_rate:.2f}</b><br>"
+        f"Recent Average (6 hours): ₱{mean:.2f}<br>"
+        f"Standard Deviation: ₱{std_dev:.2f}<br><br>"
+        f"Deviation: <b>{abs(deviation):.2f}σ</b> from mean<br>"
+        f"Percentage Change: <b>{change_sign}{percentage_change:.2f}%</b> from recent average"
+    )
 
     yag = yagmail.SMTP(
         user=SENDER_EMAIL,
