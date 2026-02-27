@@ -23,7 +23,7 @@ def main():
     historical_rates = all_recent_rates[:-1]  # Exclude the last (most recent) rate
 
     # Check for sudden change using standard deviation
-    change_result = check_sudden_change(current_rate, historical_rates, std_deviation_threshold=2.0)
+    change_result = check_sudden_change(current_rate, historical_rates, std_deviation_threshold=3.0)
 
     if change_result is None:
         message = f"The current exchange rate is ₱{current_rate}. Not enough historical data to detect sudden changes."

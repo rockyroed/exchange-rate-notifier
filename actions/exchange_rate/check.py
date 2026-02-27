@@ -1,14 +1,14 @@
 import statistics
 
 
-def check_sudden_change(current_rate, historical_rates, std_deviation_threshold=2.0):
+def check_sudden_change(current_rate, historical_rates, std_deviation_threshold=3.0):
     """
     Check if the current rate is a significant outlier compared to historical rates.
 
     Args:
         current_rate: The current exchange rate (float)
         historical_rates: List of historical rate dictionaries with 'rate' key
-        std_deviation_threshold: Number of standard deviations to consider an outlier (default: 2.0)
+        std_deviation_threshold: Number of standard deviations to consider an outlier (default: 3.0)
 
     Returns:
         dict with 'is_outlier' (bool), 'direction' ('spike' or 'drop'), 'mean' (float),
