@@ -32,5 +32,8 @@ jobs:
             - name: Run linters
               run: |
                   make lint
-                  make format-check
-                  make spell-check
+                  make format
+                  make spell
+            - name: Run typecheck
+              run: |
+                  make typecheck  
