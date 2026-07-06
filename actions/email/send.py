@@ -13,9 +13,11 @@ def hourly(conversion_rate, direction, mean, std_dev, deviation, percentage_chan
     if not SENDER_PASSWORD:
         raise ValueError("Email password is not set in the environment variables.")
 
-    RECIPIENT_EMAILS = os.getenv("RECIPIENT_EMAILS").split(",")
+    RECIPIENT_EMAILS = os.getenv("RECIPIENT_EMAILS")
     if not RECIPIENT_EMAILS:
         raise ValueError("Recipient emails are not set in the environment variables.")
+
+    RECIPIENT_EMAILS_ARRAY = RECIPIENT_EMAILS.split(",")
 
     subject = f"Exchange Rate Alert: Significant {direction.capitalize()} Detected"
 
@@ -36,7 +38,7 @@ def hourly(conversion_rate, direction, mean, std_dev, deviation, percentage_chan
         password=SENDER_PASSWORD,
     )
     yag.send(
-        to=RECIPIENT_EMAILS,
+        to=RECIPIENT_EMAILS_ARRAY,
         subject=subject,
         contents=body,
     )
@@ -53,9 +55,11 @@ def daily(rates, fig):
     if not SENDER_PASSWORD:
         raise ValueError("Email password is not set in the environment variables.")
 
-    RECIPIENT_EMAILS = os.getenv("RECIPIENT_EMAILS").split(",")
+    RECIPIENT_EMAILS = os.getenv("RECIPIENT_EMAILS")
     if not RECIPIENT_EMAILS:
         raise ValueError("Recipient emails are not set in the environment variables.")
+
+    RECIPIENT_EMAILS_ARRAY = RECIPIENT_EMAILS.split(",")
 
     # Calculate average rate
     if not rates:
@@ -84,7 +88,7 @@ def daily(rates, fig):
         password=SENDER_PASSWORD,
     )
     yag.send(
-        to=RECIPIENT_EMAILS,
+        to=RECIPIENT_EMAILS_ARRAY,
         subject=subject,
         contents=body,
     )
@@ -101,7 +105,7 @@ def daily(rates, fig):
 if __name__ == "__main__":
     # Example usage
     conversion_rate = "50.00"  # This would be dynamically fetched in a real scenario
-    res = hourly(conversion_rate)
+    res = hourly(conversion_rate, "spike", 49.50, 0.25, 2.0, 1.0)
 
     if res:
         print("Email notification sent successfully.")

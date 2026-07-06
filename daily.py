@@ -6,6 +6,9 @@ from database.rates import get_rates
 
 def main():
     rates = get_rates()
+    if not rates:
+        print("No rates found.")
+        return
     x = [row["created_at"] for row in rates]
     y = [row["rate"] for row in rates]
 

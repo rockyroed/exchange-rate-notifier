@@ -10,7 +10,7 @@ POSTGRES_PORT = os.getenv("POSTGRES_PORT")
 POSTGRES_DBNAME = os.getenv("POSTGRES_DBNAME")
 
 
-def get_rates(rows=24):
+def get_rates(rows=24) -> list[dict] | None:
     # Connect to the database
     connection = None
     cursor = None
@@ -39,19 +39,21 @@ def get_rates(rows=24):
                 (rows,),
             )
         else:
-            cursor.execute(
-                """
+            cursor.execute("""
             SELECT * FROM rates ORDER BY created_at ASC;
-            """
-            )
+            """)
         result_rows = cursor.fetchall()
 
         if result_rows is None:
             return None
 
+        description = cursor.description
+        if description is None:
+            return None
+
         # Get column names
-        colnames = [desc[0] for desc in cursor.description]
-        result = []
+        colnames = [desc[0] for desc in description]
+        result: list[dict] = []
         for row in result_rows:
             row_dict = dict(zip(colnames, row))
             if "created_at" in row_dict and row_dict["created_at"] is not None:
@@ -67,6 +69,7 @@ def get_rates(rows=24):
         return result
     except Exception as e:
         print(f"Failed to get rates: {e}")
+        return None
     finally:
         if cursor is not None:
             cursor.close()
