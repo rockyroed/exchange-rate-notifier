@@ -10,7 +10,7 @@ POSTGRES_PORT = os.getenv("POSTGRES_PORT")
 POSTGRES_DBNAME = os.getenv("POSTGRES_DBNAME")
 
 
-def get_rates(rows=24) -> list[dict] | None:
+def get_rates(rows: int | None = None, daily: bool | None = None) -> list[dict] | None:
     # Connect to the database
     connection = None
     cursor = None
@@ -37,6 +37,12 @@ def get_rates(rows=24) -> list[dict] | None:
             ) AS recent_rates ORDER BY created_at ASC;
             """,
                 (rows,),
+            )
+        elif daily:
+            cursor.execute(
+                """
+                SELECT * FROM rates WHERE created_at BETWEEN NOW() - INTERVAL '1 day' AND NOW() ORDER BY created_at ASC;
+                """,
             )
         else:
             cursor.execute("""

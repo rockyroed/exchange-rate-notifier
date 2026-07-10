@@ -5,7 +5,7 @@ from database.rates import get_rates
 
 
 def main():
-    rates = get_rates()
+    rates = get_rates(daily=True)
     if not rates:
         print("No rates found.")
         return
