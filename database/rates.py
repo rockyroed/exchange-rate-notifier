@@ -10,7 +10,7 @@ POSTGRES_PORT = os.getenv("POSTGRES_PORT")
 POSTGRES_DBNAME = os.getenv("POSTGRES_DBNAME")
 
 
-def get_rates(rows: int | None = None, daily: bool | None = None) -> list[dict] | None:
+def get_rates(rows: int | None = None, daily: bool = False) -> list[dict] | None:
     # Connect to the database
     connection = None
     cursor = None
@@ -29,7 +29,7 @@ def get_rates(rows: int | None = None, daily: bool | None = None) -> list[dict] 
 
         cursor = connection.cursor()
 
-        if rows:
+        if rows is not None:
             cursor.execute(
                 """
             SELECT * FROM (
@@ -41,7 +41,8 @@ def get_rates(rows: int | None = None, daily: bool | None = None) -> list[dict] 
         elif daily:
             cursor.execute(
                 """
-                SELECT * FROM rates WHERE created_at BETWEEN NOW() - INTERVAL '1 day' AND NOW() ORDER BY created_at ASC;
+                SELECT * FROM rates WHERE created_at BETWEEN (CURRENT_DATE - INTERVAL '1 day')
+                AND NOW() ORDER BY created_at ASC;
                 """,
             )
         else:
@@ -154,8 +155,12 @@ def post_rate(rate):
 
 
 if __name__ == "__main__":
-    rates = get_rates()
+    import json
+
+    rates = get_rates(daily=True)
     rate = get_rate(1)
 
-    print(rates)
-    print(rate)
+    print(json.dumps(rates, indent=4))
+    if rates:
+        print(len(rates))
+    print(json.dumps(rate, indent=4))
