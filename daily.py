@@ -1,7 +1,6 @@
-import plotly.graph_objs as go
-
 from actions.email.send import daily
-from database.rates import get_rates
+from database.rates import get_previous_average, get_rates
+from utils.graph import create_graph
 
 
 def main():
@@ -12,17 +11,11 @@ def main():
     x = [row["created_at"] for row in rates]
     y = [row["rate"] for row in rates]
 
-    fig = go.Figure(data=go.Scatter(x=x, y=y, mode="lines+markers"))
-    fig.update_layout(
-        title="Exchange Rate Over Time",
-        xaxis_title="Date/Time",
-        yaxis_title="Rate",
-        xaxis_tickangle=-45,
-        width=700,
-        height=350,
-    )
+    fig = create_graph(x, y)
 
-    daily(rates, fig)
+    previous_average = get_previous_average()
+
+    daily(rates, fig, previous_average)
 
 
 if __name__ == "__main__":

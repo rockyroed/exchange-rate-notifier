@@ -84,6 +84,51 @@ def get_rates(rows: int | None = None, daily: bool = False) -> list[dict] | None
             connection.close()
 
 
+def get_previous_average() -> float | None:
+    connection = None
+    cursor = None
+
+    try:
+        connection = connect(
+            user=POSTGRES_USER,
+            password=POSTGRES_PASSWORD,
+            host=POSTGRES_HOST,
+            port=POSTGRES_PORT,
+            dbname=POSTGRES_DBNAME,
+        )
+
+        if connection is None:
+            return None
+
+        cursor = connection.cursor()
+        cursor.execute("""
+            WITH current_window AS (
+                SELECT MIN(created_at) AS start_ts
+                FROM rates
+                WHERE created_at BETWEEN (CURRENT_DATE - INTERVAL '1 day') AND NOW()
+            )
+            SELECT AVG(rate)
+            FROM rates, current_window
+            WHERE current_window.start_ts IS NOT NULL
+              AND rates.created_at < current_window.start_ts
+              AND rates.created_at >= current_window.start_ts - INTERVAL '1 day';
+        """)
+        row = cursor.fetchone()
+
+        if row is None or row[0] is None:
+            return None
+
+        return float(row[0])
+    except Exception as e:
+        print(f"Failed to get previous average: {e}")
+        return None
+    finally:
+        if cursor is not None:
+            cursor.close()
+        if connection is not None:
+            connection.close()
+
+
 def get_rate(id):
     # Connect to the database
     connection = None

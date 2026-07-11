@@ -27,10 +27,9 @@ lint-and-format:
 	codespell .
 
 lint-and-format-fix:
-	flake8 .
-	ruff check .
 	black .
 	isort .
+	ruff check --fix .
 	codespell --write-changes .	
 
 typecheck:
