@@ -18,8 +18,8 @@ def main():
         xaxis_title="Date/Time",
         yaxis_title="Rate",
         xaxis_tickangle=-45,
-        width=1400,  # Increase width for better spacing
-        height=600,
+        width=700,
+        height=350,
     )
 
     daily(rates, fig)
