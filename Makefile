@@ -1,4 +1,4 @@
-.PHONY: lint format-fix format spell spell-fix typecheck
+.PHONY: lint lint-and-format lint-and-format-fix format-fix format spell spell-fix typecheck
 
 lint:
 	flake8 .
@@ -18,6 +18,20 @@ spell-fix:
 
 spell:
 	codespell .
+
+lint-and-format:
+	flake8 .
+	ruff check .
+	black --check .
+	isort --check-only .
+	codespell .
+
+lint-and-format-fix:
+	flake8 .
+	ruff check .
+	black .
+	isort .
+	codespell --write-changes .	
 
 typecheck:
 	pyright .
