@@ -19,12 +19,13 @@ def get(
         if not rates:
             raise Exception("No rates found in the response.")
 
+        exact_rate = rates.get(currency)
         rate = round(rates.get(currency), 2)
 
         # Post rate to database
         post(rate)
 
-        return rate
+        return exact_rate
     elif APP_BACKUP_ID:
         response = requests.get(
             f"https://openexchangerates.org/api/latest.json?app_id={APP_BACKUP_ID}&symbols={currency}"
