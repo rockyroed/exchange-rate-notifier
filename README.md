@@ -2,7 +2,9 @@
 
 A Python application that monitors exchange rates (PHP/USD) and sends email notifications when rates exceed configured thresholds. The system tracks rates hourly, stores them in a PostgreSQL database, and provides daily reports with visualizations.
 
-![Exchange Rate Notifier](./screenshots/exchange-rate-notifier.png)
+Daily                             | Hourly
+:--------------------------------:|:----------------------------------:
+![Daily](./screenshots/daily.png) | ![Hourly](./screenshots/hourly.png)
 
 ## Features
 
