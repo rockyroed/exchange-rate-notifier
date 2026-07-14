@@ -31,9 +31,7 @@ jobs:
             # Step 4: Run linters
             - name: Run linters
               run: |
-                  make lint
-                  make format
-                  make spell
+                  make make lint-and-format
             - name: Run typecheck
               run: |
                   make typecheck  
